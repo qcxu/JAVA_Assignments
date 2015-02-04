@@ -42,7 +42,7 @@ public class StringDNAStrand implements DNAStrand {
 
 	public DNAStrand extract(int start, int end) {
 		if (start < 0 || start > end 
-				|| end >= this.getLength()) {
+				|| start >= this.getLength()) {
 			throw new RuntimeException("Start/end index not valid");
 		} else {
 			DNAStrand strand = new StringDNAStrand(this.bases.substring(start, end+1));

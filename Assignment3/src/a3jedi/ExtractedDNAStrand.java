@@ -32,24 +32,26 @@ public class ExtractedDNAStrand implements DNAStrand {
 	}
 
 	public char getBaseAt(int idx) {
-		if (idx >= 0 && idx <= end - start) {
-			return this.source_strand.getBaseAt(idx + start);
+		if (idx >= 0 && idx < this.getLength()) {
+			return this.source_strand.extract(this.start, this.end).getBaseAt(idx);
 		} else {
 			throw new RuntimeException("Index not valid");
 		}
 	}
 
 	public int getLength() {
-		return end - start + 1;
+		return this.source_strand.extract(this.start, this.end).getLength();
 	}
 
 	public DNAStrand extract(int start, int end) {
-		if (start < 0 || start > end 
-				|| end >= this.getLength()) {
-			throw new RuntimeException("Start/end index not valid");
+		if (start >= 0 && start <= end 
+				&& end < this.getLength()) {
+			return new ExtractedDNAStrand(this.source_strand.extract(this.start, this.end),
+					start, end);
+//			return this.source_strand.extract(this.start, this.end)
+//					.extract(start, end);
 		} else {
-			return this.source_strand.extract(this.start, this.end)
-					.extract(start, end);
+			throw new RuntimeException("Start/end index not valid");	
 		}
 	}
 
@@ -65,27 +67,30 @@ public class ExtractedDNAStrand implements DNAStrand {
 	public int findSubstrand(DNAStrand substrand) {
 		if (substrand != null) {
 			
-			for (int i=0; i<this.getLength(); i++) {
-				boolean isMatched = true; 
-				int j = 0;
-				while (isMatched) {
-					if (this.getBaseAt(i) == substrand.getBaseAt(j)) {
-						if (j < substrand.getLength()-1) {
-							j += 1;
-							if (i < this.getLength()-1) {
-								i += 1;
-							} else {
-								isMatched = false;
-							}	
-						} else {
-							return i - substrand.getLength() + 1;
-						}	
-					} else {
-						isMatched = false;
-					}
-				}	
-			}
-			return -1;
+			DNAStrand strand = this.source_strand.extract(this.start, this.end);
+			return strand.findSubstrand(substrand);
+			
+//			for (int i=0; i<this.getLength(); i++) {
+//				boolean isMatched = true; 
+//				int j = 0;
+//				while (isMatched) {
+//					if (this.getBaseAt(i) == substrand.getBaseAt(j)) {
+//						if (j < substrand.getLength()-1) {
+//							j += 1;
+//							if (i < this.getLength()-1) {
+//								i += 1;
+//							} else {
+//								isMatched = false;
+//							}	
+//						} else {
+//							return i - substrand.getLength() + 1;
+//						}	
+//					} else {
+//						isMatched = false;
+//					}
+//				}	
+//			}
+//			return -1;
 		} else {
 			throw new RuntimeException("substrand is null");
 		}
@@ -94,28 +99,30 @@ public class ExtractedDNAStrand implements DNAStrand {
 	public int findSubstrand(DNAStrand substrand, int search_start_position) {
 		if (substrand != null && search_start_position >= 0 
 				&& search_start_position < this.getLength()) {
+			DNAStrand strand = this.source_strand.extract(this.start, this.end);
+			return strand.findSubstrand(substrand, search_start_position);
 			
-			for (int i=search_start_position; i<this.getLength(); i++) {
-				boolean isMatched = true; 
-				int j = 0;
-				while (isMatched) {
-					if (this.getBaseAt(i) == substrand.getBaseAt(j)) {
-						if (j < substrand.getLength()-1) {
-							j += 1;
-							if (i < this.getLength()-1) {
-								i += 1;
-							} else {
-								isMatched = false;
-							}	
-						} else {
-							return i - substrand.getLength() + 1;
-						}	
-					} else {
-						isMatched = false;
-					}
-				}	
-			}
-			return -1;
+//			for (int i=search_start_position; i<this.getLength(); i++) {
+//				boolean isMatched = true; 
+//				int j = 0;
+//				while (isMatched) {
+//					if (this.getBaseAt(i) == substrand.getBaseAt(j)) {
+//						if (j < substrand.getLength()-1) {
+//							j += 1;
+//							if (i < this.getLength()-1) {
+//								i += 1;
+//							} else {
+//								isMatched = false;
+//							}	
+//						} else {
+//							return i - substrand.getLength() + 1;
+//						}	
+//					} else {
+//						isMatched = false;
+//					}
+//				}	
+//			}
+//			return -1;
 		} else {
 			throw new RuntimeException("substrand is null or search start position illegal");
 		}

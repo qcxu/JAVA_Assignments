@@ -69,6 +69,7 @@ public class CharArrayDNAStrand implements DNAStrand {
 		}
 	}
 	
+	
 	private boolean isBase(char[] base_array) {
 		for (int i=0; i<base_array.length; i++) {
 			if (base_array[i] != 'C' && base_array[i] != 'G' 
@@ -78,4 +79,6 @@ public class CharArrayDNAStrand implements DNAStrand {
 		}
 		return true;
 	}
+	
+	
 }

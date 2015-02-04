@@ -32,24 +32,26 @@ public class ExtractedDNAStrand implements DNAStrand {
 	}
 
 	public char getBaseAt(int idx) {
-		if (idx >= 0 && idx <= end - start) {
-			return this.source_strand.getBaseAt(idx + start);
+		if (idx >= 0 && idx < this.getLength()) {
+			return this.source_strand.extract(this.start, this.end).getBaseAt(idx);
 		} else {
 			throw new RuntimeException("Index not valid");
 		}
 	}
 
 	public int getLength() {
-		return end - start + 1;
+		return this.source_strand.extract(this.start, this.end).getLength();
 	}
 
 	public DNAStrand extract(int start, int end) {
-		if (start < 0 || start > end 
-				|| end >= this.getLength()) {
-			throw new RuntimeException("Start/end index not valid");
+		if (start >= 0 && start <= end 
+				&& end < this.getLength()) {
+			return new ExtractedDNAStrand(this.source_strand.extract(this.start, this.end),
+					start, end);
+//			return this.source_strand.extract(this.start, this.end)
+//					.extract(start, end);
 		} else {
-			return this.source_strand.extract(this.start, this.end)
-					.extract(start, end);
+			throw new RuntimeException("Start/end index not valid");	
 		}
 	}
 
@@ -61,4 +63,6 @@ public class ExtractedDNAStrand implements DNAStrand {
 			throw new RuntimeException("tail is null");
 		}
 	}
+	
+	
 }

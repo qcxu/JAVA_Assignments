@@ -65,5 +65,64 @@ public class StringDNAStrand implements DNAStrand {
 		
 	}
 	
+	public int findSubstrand(DNAStrand substrand) {
+		if (substrand != null) {
+			
+			for (int i=0; i<this.getLength(); i++) {
+				boolean isMatched = true; 
+				int j = 0;
+				while (isMatched) {
+					if (this.getBaseAt(i) == substrand.getBaseAt(j)) {
+						if (j < substrand.getLength()-1) {
+							j += 1;
+							if (i < this.getLength()-1) {
+								i += 1;
+							} else {
+								isMatched = false;
+							}	
+						} else {
+							return i - substrand.getLength() + 1;
+						}	
+					} else {
+						isMatched = false;
+					}
+				}	
+			}
+			return -1;
+		} else {
+			throw new RuntimeException("substrand is null");
+		}
+	}
+	
+	public int findSubstrand(DNAStrand substrand, int search_start_position) {
+		if (substrand != null && search_start_position >= 0 
+				&& search_start_position < this.getLength()) {
+			
+			for (int i=search_start_position; i<this.getLength(); i++) {
+				boolean isMatched = true; 
+				int j = 0;
+				while (isMatched) {
+					if (this.getBaseAt(i) == substrand.getBaseAt(j)) {
+						if (j < substrand.getLength()-1) {
+							j += 1;
+							if (i < this.getLength()-1) {
+								i += 1;
+							} else {
+								isMatched = false;
+							}	
+						} else {
+							return i - substrand.getLength() + 1;
+						}	
+					} else {
+						isMatched = false;
+					}
+				}	
+			}
+			return -1;
+		} else {
+			throw new RuntimeException("substrand is null or search start position illegal");
+		}
+	}
+	
 	
 }
