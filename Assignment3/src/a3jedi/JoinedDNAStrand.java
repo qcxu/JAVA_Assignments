@@ -32,7 +32,8 @@ public class JoinedDNAStrand implements DNAStrand {
 	public char getBaseAt(int idx) {
 		if (idx >= 0 && idx < this.getLength()) {
 			return this.head.join(this.tail).getBaseAt(idx);
-		} else {
+		} 
+	else {
 			throw new RuntimeException("Index not valid");
 		}
 	}
